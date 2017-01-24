@@ -17,7 +17,7 @@ public interface AirportService {
 
 	void deleteAirport(String iata);
 
-	Collection<Airport> getAirports();
+	Collection<Airport> getAllAirports();
 
 	Collection<AtmosphericInformation> getAllAtmosphericInformation();
 

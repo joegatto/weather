@@ -26,7 +26,7 @@ public class AirportServiceImpl implements AirportService {
 	}
 
 	@Override
-	public Collection<Airport> getAirports() {
+	public Collection<Airport> getAllAirports() {
 		return dataRepository.getAirportData().values();
 	}
 
