@@ -105,10 +105,10 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
 		if (radius == 0) {
 			retval.add(airportService.getAtmosphericInformationByIataCode(iata));
 		} else {
-			Airport ad = findAirport(iata);
-			for (int i = 0; i < airportData.size(); i++) {
-				if (calculateDistance(ad, airportData.get(i)) <= radius) {
-					AtmosphericInformation ai = atmosphericInformation.get(i);
+			Airport airport = findAirport(iata);
+			for (Airport a : airportService.getAirports()) {
+				if (calculateDistance(airport, a) <= radius) {
+					AtmosphericInformation ai = airportService.getAtmosphericInformationByIataCode(a.getIata());
 					if (ai.getCloudCover() != null || ai.getHumidity() != null || ai.getPrecipitation() != null
 							|| ai.getPressure() != null || ai.getTemperature() != null || ai.getWind() != null) {
 						retval.add(ai);
@@ -129,8 +129,8 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
 	 */
 	public void updateRequestFrequency(final String iata, final Double radius) {
 		Airport airport = findAirport(iata);
-		airportService.getRequestCounts().put(airportData, requestFrequency.getOrDefault(airportData, 0) + 1);
-		airportService.getRadiusCounts().put(radius, radiusFreq.getOrDefault(radius, 0));
+		airportService.getRequestCounts().put(airport.getIata(), airportService.getRequestCount(airport.getIata()) + 1);
+		airportService.getRadiusCounts().put(radius, airportService.getRadiusCount(radius));
 	}
 
 	/**

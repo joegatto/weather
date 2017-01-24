@@ -75,7 +75,8 @@ public class WeatherCollectorEndpointImpl implements WeatherCollectorEndpoint {
 
 	@Override
 	public Response deleteAirport(@PathParam("iata") final String iata) {
-		return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+		airportService.deleteAirport(iata);
+		return Response.status(Response.Status.OK).build();
 	}
 
 	@Override
