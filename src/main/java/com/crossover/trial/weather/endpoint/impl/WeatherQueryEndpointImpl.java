@@ -195,7 +195,7 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
     /**
      * A dummy init method that loads hard coded data
      */
-    protected static void init() {
+    public static void init() {
         airportData.clear();
         atmosphericInformation.clear();
         requestFrequency.clear();

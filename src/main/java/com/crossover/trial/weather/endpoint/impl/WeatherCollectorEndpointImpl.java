@@ -181,7 +181,7 @@ public class WeatherCollectorEndpointImpl implements WeatherCollectorEndpoint {
         Airport ad = new Airport.Builder().withIata(iataCode).withLatitude(latitude).withLongitude(longitude).build();
         airportData.add(ad);
 
-        AtmosphericInformation ai = new AtmosphericInformation();
+        AtmosphericInformation ai = new AtmosphericInformation.Builder().build();
         atmosphericInformation.add(ai);
         return ad;
     }

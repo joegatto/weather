@@ -34,14 +34,13 @@ public class Airport {
     private double altitude;
 
     /**
-     * Hours offset from UTC. Fractional hours are expressed as decimals. (e.g.
-     * India is 5.5)
+     * Hours offset from UTC. Fractional hours are expressed as decimals.
      */
     private int timezone;
 
     private DST dst;
 
-    private Airport(Builder builder) {
+    private Airport(final Builder builder) {
         this.city = builder.city;
         this.country = builder.country;
         this.iata = builder.iata;
@@ -105,7 +104,7 @@ public class Airport {
         return altitude;
     }
 
-    public void setAltitude(double altitude) {
+    public void setAltitude(final double altitude) {
         this.altitude = altitude;
     }
 

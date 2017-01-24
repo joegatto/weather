@@ -5,12 +5,12 @@ public enum DST {
 
     private String region;
 
-    private DST(String region) {
+    DST(final String region) {
         this.region = region;
     }
 
     public String getRegion() {
         return region;
     }
-    
+
 }

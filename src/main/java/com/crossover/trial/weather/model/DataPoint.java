@@ -19,7 +19,7 @@ public class DataPoint {
     private int last = 0;
     private int count = 0;
 
-    private DataPoint(Builder builder) {
+    private DataPoint(final Builder builder) {
         this.first = builder.first;
         this.mean = builder.mean;
         this.median = builder.median;
@@ -82,7 +82,7 @@ public class DataPoint {
     }
 
     @Override
-    public boolean equals(Object that) {
+    public boolean equals(final Object that) {
         return EqualsBuilder.reflectionEquals(this, that, false);
     }
 

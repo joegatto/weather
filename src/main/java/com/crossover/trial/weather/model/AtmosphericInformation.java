@@ -33,7 +33,7 @@ public class AtmosphericInformation {
     /** the last time this data was updated, in milliseconds since UTC epoch */
     private long lastUpdateTime;
 
-    private AtmosphericInformation(Builder builder) {
+    private AtmosphericInformation(final Builder builder) {
         builder.temperature.ifPresent(value -> setTemperature(value));
         builder.wind.ifPresent(value -> setWind(value));
         builder.humidity.ifPresent(value -> setHumidity(value));
@@ -46,7 +46,7 @@ public class AtmosphericInformation {
         return temperature;
     }
 
-    public void setTemperature(DataPoint temperature) {
+    public void setTemperature(final DataPoint temperature) {
         if (temperature.getMean() < DataPointType.TEMPERATURE.getMin()
                 || temperature.getMean() > DataPointType.TEMPERATURE.getMax()) {
             throw new IllegalArgumentException("Temperature is out of allowed range");
@@ -58,7 +58,7 @@ public class AtmosphericInformation {
         return wind;
     }
 
-    public void setWind(DataPoint wind) {
+    public void setWind(final DataPoint wind) {
         if (wind.getMean() < DataPointType.WIND.getMin() || wind.getMean() > DataPointType.WIND.getMax()) {
             throw new IllegalArgumentException("Wind is out of allowed range");
         }
@@ -69,7 +69,7 @@ public class AtmosphericInformation {
         return humidity;
     }
 
-    public void setHumidity(DataPoint humidity) {
+    public void setHumidity(final DataPoint humidity) {
         if (humidity.getMean() < DataPointType.HUMIDITY.getMin()
                 || humidity.getMean() > DataPointType.HUMIDITY.getMax()) {
             throw new IllegalArgumentException("Humidity is out of allowed range");
@@ -81,7 +81,7 @@ public class AtmosphericInformation {
         return precipitation;
     }
 
-    public void setPrecipitation(DataPoint precipitation) {
+    public void setPrecipitation(final DataPoint precipitation) {
         if (precipitation.getMean() < DataPointType.PRECIPITATION.getMin()
                 || precipitation.getMean() > DataPointType.PRECIPITATION.getMax()) {
             throw new IllegalArgumentException("Precipitation is out of allowed range");
@@ -93,7 +93,7 @@ public class AtmosphericInformation {
         return pressure;
     }
 
-    public void setPressure(DataPoint pressure) {
+    public void setPressure(final DataPoint pressure) {
         if (pressure.getMean() < DataPointType.PRESSURE.getMin()
                 || pressure.getMean() > DataPointType.PRESSURE.getMax()) {
             throw new IllegalArgumentException("Pressure is out of allowed range");
@@ -105,7 +105,7 @@ public class AtmosphericInformation {
         return cloudCover;
     }
 
-    public void setCloudCover(DataPoint cloudCover) {
+    public void setCloudCover(final DataPoint cloudCover) {
         if (cloudCover.getMean() < DataPointType.CLOUDCOVER.getMin()
                 || cloudCover.getMean() > DataPointType.CLOUDCOVER.getMax()) {
             throw new IllegalArgumentException("Cloudcover is out of allowed range");
@@ -117,7 +117,7 @@ public class AtmosphericInformation {
         return this.lastUpdateTime;
     }
 
-    public void setLastUpdateTime(long lastUpdateTime) {
+    public void setLastUpdateTime(final long lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
 
@@ -132,7 +132,7 @@ public class AtmosphericInformation {
     }
 
     @Override
-    public boolean equals(Object that) {
+    public boolean equals(final Object that) {
         return EqualsBuilder.reflectionEquals(this, that, false);
     }
 
@@ -145,32 +145,32 @@ public class AtmosphericInformation {
         private Optional<DataPoint> pressure = Optional.empty();
         private Optional<DataPoint> cloudCover = Optional.empty();
 
-        public Builder withTemperature(DataPoint temperature) {
+        public Builder withTemperature(final DataPoint temperature) {
             this.temperature = Optional.of(temperature);
             return this;
         }
 
-        public Builder withWind(DataPoint wind) {
+        public Builder withWind(final DataPoint wind) {
             this.wind = Optional.of(wind);
             return this;
         }
 
-        public Builder withHumidity(DataPoint humidity) {
+        public Builder withHumidity(final DataPoint humidity) {
             this.humidity = Optional.of(humidity);
             return this;
         }
 
-        public Builder withPrecipitation(DataPoint precipitation) {
+        public Builder withPrecipitation(final DataPoint precipitation) {
             this.precipitation = Optional.of(precipitation);
             return this;
         }
 
-        public Builder withPressure(DataPoint pressure) {
+        public Builder withPressure(final DataPoint pressure) {
             this.pressure = Optional.of(pressure);
             return this;
         }
 
-        public Builder withCloudCover(DataPoint cloudCover) {
+        public Builder withCloudCover(final DataPoint cloudCover) {
             this.cloudCover = Optional.of(cloudCover);
             return this;
         }

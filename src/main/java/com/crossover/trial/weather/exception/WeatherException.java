@@ -11,12 +11,12 @@ public class WeatherException extends Exception {
 
     private final DataPointType dataPointType;
 
-    public WeatherException(DataPointType dataPointType, String message) {
+    public WeatherException(final DataPointType dataPointType, final String message) {
         super(message);
         this.dataPointType = dataPointType;
     }
 
-    public WeatherException(DataPointType dataPointType, String message, Throwable cause) {
+    public WeatherException(final DataPointType dataPointType, final String message, final Throwable cause) {
         super(message, cause);
         this.dataPointType = dataPointType;
     }
