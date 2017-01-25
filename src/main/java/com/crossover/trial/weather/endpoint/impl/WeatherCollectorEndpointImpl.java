@@ -69,7 +69,9 @@ public class WeatherCollectorEndpointImpl implements WeatherCollectorEndpoint {
     @Override
     public Response addAirport(@PathParam("iata") final String iata, @PathParam("lat") final String latString,
             @PathParam("long") final String longString) {
-        addAirport(iata, Double.valueOf(latString), Double.valueOf(longString));
+        Airport airport = new Airport.Builder().withIata(iata).withLatitude(Double.valueOf(latString))
+                .withLongitude(Double.valueOf(longString)).build();
+        airportService.addAirport(airport);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -158,22 +160,4 @@ public class WeatherCollectorEndpointImpl implements WeatherCollectorEndpoint {
         throw new IllegalStateException("couldn't update atmospheric data");
     }
 
-    /**
-     * Add a new known airport to our list.
-     *
-     * @param iataCode
-     *            3 letter code
-     * @param latitude
-     *            in degrees
-     * @param longitude
-     *            in degrees
-     *
-     * @return the added airport
-     */
-    private Airport addAirport(final String iataCode, final double latitude, final double longitude) {
-        Airport ad = new Airport.Builder().withIata(iataCode).withLatitude(latitude).withLongitude(longitude).build();
-        AtmosphericInformation ai = new AtmosphericInformation.Builder().build();
-        airportService.getAllAtmosphericInformation().add(ai);
-        return airportService.addAirport(ad);
-    }
 }

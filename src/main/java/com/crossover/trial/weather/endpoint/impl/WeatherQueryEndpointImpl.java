@@ -15,6 +15,7 @@ import com.crossover.trial.weather.model.Airport;
 import com.crossover.trial.weather.model.AtmosphericInformation;
 import com.crossover.trial.weather.service.AirportService;
 import com.crossover.trial.weather.service.impl.AirportServiceImpl;
+import com.crossover.trial.weather.utils.CoordinateHelper;
 import com.google.gson.Gson;
 
 /**
@@ -102,10 +103,10 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
         if (radius == 0) {
             retval.add(airportService.getAtmosphericInformationByIataCode(iata));
         } else {
-            Airport airport = findAirport(iata);
-            for (Airport a : airportService.getAllAirports()) {
-                if (calculateDistance(airport, a) <= radius) {
-                    AtmosphericInformation ai = airportService.getAtmosphericInformationByIataCode(a.getIata());
+            Airport airport = airportService.getAirport(iata);
+            for (Airport airport2 : airportService.getAllAirports()) {
+                if (CoordinateHelper.calculateDistance(airport.getCoordinate(), airport2.getCoordinate()) <= radius) {
+                    AtmosphericInformation ai = airportService.getAtmosphericInformationByIataCode(airport2.getIata());
                     if (ai.getCloudCover() != null || ai.getHumidity() != null || ai.getPrecipitation() != null
                             || ai.getPressure() != null || ai.getTemperature() != null || ai.getWind() != null) {
                         retval.add(ai);
@@ -125,56 +126,10 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
      *            query radius
      */
     public void updateRequestFrequency(final String iata, final Double radius) {
-        Airport airport = findAirport(iata);
+        Airport airport = airportService.getAirport(iata);
         airportService.getRequestCounts().put(airport.getIata(),
                 new AtomicInteger(airportService.getRequestCount(airport.getIata()).incrementAndGet()));
         airportService.getRadiusCounts().put(radius, airportService.getRadiusCount(radius));
-    }
-
-    /**
-     * Given an iataCode find the airport data
-     *
-     * @param iataCode
-     *            as a string
-     * @return airport data or null if not found
-     */
-    private Airport findAirport(final String iataCode) {
-        return airportService.getAllAirports().stream().filter(ap -> ap.getIata().equals(iataCode)).findFirst()
-                .orElse(null);
-    }
-
-    /**
-     * Haversine distance between two airports.
-     *
-     * @param airport1
-     *            airport 1
-     * @param airport2
-     *            airport 2
-     * @return the distance in KM
-     */
-    public double calculateDistance(final Airport airport1, final Airport airport2) {
-        double deltaLat = Math.toRadians(airport2.getLatitude() - airport1.getLatitude());
-        double deltaLon = Math.toRadians(airport2.getLongitude() - airport1.getLongitude());
-        double a = Math.pow(Math.sin(deltaLat / 2), 2) + Math.pow(Math.sin(deltaLon / 2), 2)
-                * Math.cos(airport1.getLatitude()) * Math.cos(airport2.getLatitude());
-        double c = 2 * Math.asin(Math.sqrt(a));
-        return R * c;
-    }
-
-    /**
-     * A dummy init method that loads hard coded data
-     */
-    public void init() {
-        airportService.addAirport(
-                new Airport.Builder().withIata("BOS").withLatitude(42.364347).withLongitude(-71.005181).build());
-        airportService.addAirport(
-                new Airport.Builder().withIata("EWR").withLatitude(40.6925).withLongitude(-74.168667).build());
-        airportService.addAirport(
-                new Airport.Builder().withIata("JFK").withLatitude(40.639751).withLongitude(-73.778925).build());
-        airportService.addAirport(
-                new Airport.Builder().withIata("LGA").withLatitude(40.777245).withLongitude(-73.872608).build());
-        airportService.addAirport(
-                new Airport.Builder().withIata("MMU").withLatitude(40.79935).withLongitude(-74.4148747).build());
     }
 
 }

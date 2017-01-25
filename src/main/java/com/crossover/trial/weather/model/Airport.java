@@ -24,11 +24,8 @@ public class Airport {
     /** The four letter ICAO code */
     private String icao = "";
 
-    /** latitude value in degrees */
-    private double latitude;
-
-    /** longitude value in degrees */
-    private double longitude;
+    /** latitude/longitude values in degrees */
+    private Coordinate coordinate = null;
 
     /** altitude value in feet */
     private double altitude;
@@ -45,8 +42,7 @@ public class Airport {
         this.country = builder.country;
         this.iata = builder.iata;
         this.icao = builder.icao;
-        this.latitude = builder.latitude;
-        this.longitude = builder.longitude;
+        this.coordinate = new Coordinate(builder.latitude, builder.longitude);
         this.altitude = builder.altitude;
         this.timezone = builder.timezone;
         this.dst = builder.dst;
@@ -84,20 +80,12 @@ public class Airport {
         this.icao = icao;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
-    public void setLatitude(final double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(final double longitude) {
-        this.longitude = longitude;
+    public void setCoordinate(final Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public double getAltitude() {
@@ -112,7 +100,7 @@ public class Airport {
         return timezone;
     }
 
-    public void setUtcOffset(final int timezone) {
+    public void setTimezone(final int timezone) {
         this.timezone = timezone;
     }
 
