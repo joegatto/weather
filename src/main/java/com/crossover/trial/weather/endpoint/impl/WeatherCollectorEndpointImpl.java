@@ -118,54 +118,41 @@ public class WeatherCollectorEndpointImpl implements WeatherCollectorEndpoint {
     private void updateAtmosphericInformation(final AtmosphericInformation ai, final String pointType,
             final DataPoint dp) throws WeatherException {
 
-        if (pointType.equalsIgnoreCase(DataPointType.WIND.name())) {
-            if (dp.getMean() >= DataPointType.WIND.getMin()) {
-                ai.setWind(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
+        if (pointType.equalsIgnoreCase(DataPointType.WIND.name()) && DataPointType.WIND.validate(dp)) {
+            ai.setWind(dp);
+            ai.setLastUpdateTime(System.currentTimeMillis());
+            return;
         }
 
-        if (pointType.equalsIgnoreCase(DataPointType.TEMPERATURE.name())) {
-            if (dp.getMean() >= DataPointType.TEMPERATURE.getMin()
-                    && dp.getMean() < DataPointType.TEMPERATURE.getMax()) {
-                ai.setTemperature(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
+        if (pointType.equalsIgnoreCase(DataPointType.TEMPERATURE.name()) && DataPointType.TEMPERATURE.validate(dp)) {
+            ai.setTemperature(dp);
+            ai.setLastUpdateTime(System.currentTimeMillis());
+            return;
         }
 
-        if (pointType.equalsIgnoreCase(DataPointType.HUMIDITY.name())) {
-            if (dp.getMean() >= DataPointType.HUMIDITY.getMin() && dp.getMean() < DataPointType.HUMIDITY.getMax()) {
-                ai.setHumidity(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
+        if (pointType.equalsIgnoreCase(DataPointType.HUMIDITY.name()) && DataPointType.HUMIDITY.validate(dp)) {
+            ai.setHumidity(dp);
+            ai.setLastUpdateTime(System.currentTimeMillis());
+            return;
         }
 
-        if (pointType.equalsIgnoreCase(DataPointType.PRESSURE.name())) {
-            if (dp.getMean() >= DataPointType.PRESSURE.getMin() && dp.getMean() < DataPointType.PRESSURE.getMax()) {
-                ai.setPressure(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
+        if (pointType.equalsIgnoreCase(DataPointType.PRESSURE.name()) && DataPointType.PRESSURE.validate(dp)) {
+            ai.setPressure(dp);
+            ai.setLastUpdateTime(System.currentTimeMillis());
+            return;
         }
 
-        if (pointType.equalsIgnoreCase(DataPointType.CLOUDCOVER.name())) {
-            if (dp.getMean() >= DataPointType.CLOUDCOVER.getMin() && dp.getMean() < DataPointType.CLOUDCOVER.getMax()) {
-                ai.setCloudCover(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
+        if (pointType.equalsIgnoreCase(DataPointType.CLOUDCOVER.name()) && DataPointType.CLOUDCOVER.validate(dp)) {
+            ai.setCloudCover(dp);
+            ai.setLastUpdateTime(System.currentTimeMillis());
+            return;
         }
 
-        if (pointType.equalsIgnoreCase(DataPointType.PRECIPITATION.name())) {
-            if (dp.getMean() >= DataPointType.PRECIPITATION.getMin()
-                    && dp.getMean() < DataPointType.PRECIPITATION.getMax()) {
-                ai.setPrecipitation(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
+        if (pointType.equalsIgnoreCase(DataPointType.PRECIPITATION.name())
+                && DataPointType.PRECIPITATION.validate(dp)) {
+            ai.setPrecipitation(dp);
+            ai.setLastUpdateTime(System.currentTimeMillis());
+            return;
         }
 
         throw new IllegalStateException("couldn't update atmospheric data");

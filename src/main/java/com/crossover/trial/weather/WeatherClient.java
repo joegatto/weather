@@ -72,7 +72,7 @@ public class WeatherClient {
 
         wc.pingQuery();
         wc.exit();
-        
+
         System.out.print("complete");
         System.exit(0);
     }

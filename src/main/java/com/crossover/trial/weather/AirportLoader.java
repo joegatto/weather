@@ -57,7 +57,7 @@ public class AirportLoader {
 				.build();
 	};
 
-	private void processResultStatus(String iataCode, Response post) {
+	private void processResultStatus(final String iataCode, final Response post) {
 		switch (post.getStatus()) {
 		case 200:
 			break;
