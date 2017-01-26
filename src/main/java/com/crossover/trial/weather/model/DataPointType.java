@@ -8,8 +8,7 @@ import com.crossover.trial.weather.exception.WeatherException;
  * @author Joao Gatto
  */
 public enum DataPointType {
-    WIND(0, 1000), TEMPERATURE(-50, 100), HUMIDITY(0, 100), PRESSURE(650, 800), CLOUDCOVER(0, 100), PRECIPITATION(0,
-            100);
+    WIND(0, 1000), TEMPERATURE(-50, 100), HUMIDITY(0, 100), PRESSURE(650, 800), CLOUDCOVER(0, 100), PRECIPITATION(0, 100);
 
     private double min;
     private double max;

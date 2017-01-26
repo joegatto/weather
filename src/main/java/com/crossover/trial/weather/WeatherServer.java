@@ -43,8 +43,7 @@ public class WeatherServer {
             }));
 
             HttpServerProbe probe = new HttpServerProbe.Adapter() {
-                public void onRequestReceiveEvent(final HttpServerFilter filter, final Connection connection,
-                        final Request request) {
+                public void onRequestReceiveEvent(final HttpServerFilter filter, final Connection connection, final Request request) {
                     System.out.println(request.getRequestURI());
                 }
             };

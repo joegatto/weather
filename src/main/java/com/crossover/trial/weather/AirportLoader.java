@@ -42,18 +42,16 @@ public class AirportLoader {
         BufferedReader reader = new BufferedReader(new InputStreamReader(airportDataStream));
         List<Airport> airports = reader.lines().skip(1).map(mapToAirport).collect(Collectors.toList());
         airports.stream().filter(Objects::nonNull).forEach((airport) -> {
-            Response post = collect.path("/airport/" + airport.getIata() + "/" + airport.getCoordinate().getLatitude()
-                    + "/" + airport.getCoordinate().getLongitude()).request().post(Entity.text(""));
+            Response post = collect.path("/airport/" + airport.getIata() + "/" + airport.getCoordinate().getLatitude() + "/" + airport.getCoordinate()
+                    .getLongitude()).request().post(Entity.text(""));
             processResultStatus(airport.getIata(), post);
         });
     }
 
     private static Function<String, Airport> mapToAirport = (line) -> {
         String[] p = line.split(COMMA);
-        return new Airport.Builder().withCity(p[1]).withCountry(p[2]).withIata(p[3]).withIcao(p[4])
-                .withLatitude(Double.valueOf(p[5])).withLongitude(Double.valueOf(p[6]))
-                .withAltitude(Double.valueOf(p[7])).withTimezone(Integer.valueOf(p[8])).withDst(DST.valueOf(p[9]))
-                .build();
+        return new Airport.Builder().withCity(p[1]).withCountry(p[2]).withIata(p[3]).withIcao(p[4]).withLatitude(Double.valueOf(p[5])).withLongitude(
+                Double.valueOf(p[6])).withAltitude(Double.valueOf(p[7])).withTimezone(Integer.valueOf(p[8])).withDst(DST.valueOf(p[9])).build();
     };
 
     private void processResultStatus(final String iataCode, final Response post) {
@@ -66,8 +64,7 @@ public class AirportLoader {
             break;
 
         default:
-            System.out.println(
-                    "ERROR when adding airport '" + iataCode + "': " + post.getStatus() + " " + post.getStatusInfo());
+            System.out.println("ERROR when adding airport '" + iataCode + "': " + post.getStatus() + " " + post.getStatusInfo());
         }
     }
 

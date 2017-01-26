@@ -13,9 +13,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class AtmosphericInformation implements Serializable {
 
-	private static final long serialVersionUID = 4884101137188765237L;
+    private static final long serialVersionUID = 4884101137188765237L;
 
-	/** temperature in degrees celsius */
+    /** temperature in degrees celsius */
     private DataPoint temperature;
 
     /** wind speed in km/h */
@@ -50,8 +50,7 @@ public class AtmosphericInformation implements Serializable {
     }
 
     public void setTemperature(final DataPoint temperature) {
-        if (temperature.getMean() < DataPointType.TEMPERATURE.getMin()
-                || temperature.getMean() > DataPointType.TEMPERATURE.getMax()) {
+        if (temperature.getMean() < DataPointType.TEMPERATURE.getMin() || temperature.getMean() > DataPointType.TEMPERATURE.getMax()) {
             throw new IllegalArgumentException("Temperature is out of allowed range");
         }
         this.temperature = temperature;
@@ -73,8 +72,7 @@ public class AtmosphericInformation implements Serializable {
     }
 
     public void setHumidity(final DataPoint humidity) {
-        if (humidity.getMean() < DataPointType.HUMIDITY.getMin()
-                || humidity.getMean() > DataPointType.HUMIDITY.getMax()) {
+        if (humidity.getMean() < DataPointType.HUMIDITY.getMin() || humidity.getMean() > DataPointType.HUMIDITY.getMax()) {
             throw new IllegalArgumentException("Humidity is out of allowed range");
         }
         this.humidity = humidity;
@@ -85,8 +83,7 @@ public class AtmosphericInformation implements Serializable {
     }
 
     public void setPrecipitation(final DataPoint precipitation) {
-        if (precipitation.getMean() < DataPointType.PRECIPITATION.getMin()
-                || precipitation.getMean() > DataPointType.PRECIPITATION.getMax()) {
+        if (precipitation.getMean() < DataPointType.PRECIPITATION.getMin() || precipitation.getMean() > DataPointType.PRECIPITATION.getMax()) {
             throw new IllegalArgumentException("Precipitation is out of allowed range");
         }
         this.precipitation = precipitation;
@@ -97,8 +94,7 @@ public class AtmosphericInformation implements Serializable {
     }
 
     public void setPressure(final DataPoint pressure) {
-        if (pressure.getMean() < DataPointType.PRESSURE.getMin()
-                || pressure.getMean() > DataPointType.PRESSURE.getMax()) {
+        if (pressure.getMean() < DataPointType.PRESSURE.getMin() || pressure.getMean() > DataPointType.PRESSURE.getMax()) {
             throw new IllegalArgumentException("Pressure is out of allowed range");
         }
         this.pressure = pressure;
@@ -109,8 +105,7 @@ public class AtmosphericInformation implements Serializable {
     }
 
     public void setCloudCover(final DataPoint cloudCover) {
-        if (cloudCover.getMean() < DataPointType.CLOUDCOVER.getMin()
-                || cloudCover.getMean() > DataPointType.CLOUDCOVER.getMax()) {
+        if (cloudCover.getMean() < DataPointType.CLOUDCOVER.getMin() || cloudCover.getMean() > DataPointType.CLOUDCOVER.getMax()) {
             throw new IllegalArgumentException("Cloudcover is out of allowed range");
         }
         this.cloudCover = cloudCover;
@@ -139,7 +134,7 @@ public class AtmosphericInformation implements Serializable {
         return EqualsBuilder.reflectionEquals(this, that, false);
     }
 
-	public static class Builder {
+    public static class Builder {
 
         private Optional<DataPoint> temperature = Optional.empty();
         private Optional<DataPoint> wind = Optional.empty();

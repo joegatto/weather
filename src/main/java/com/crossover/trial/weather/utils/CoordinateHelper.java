@@ -38,7 +38,7 @@ public class CoordinateHelper {
      * @return true if, and only if, the latitude is within the MIN and MAX
      *         latitude
      */
-    public static boolean isValidLatitude(double latitude) {
+    public static boolean isValidLatitude(final double latitude) {
         return (latitude >= MIN_LATITUDE && latitude <= MAX_LATITUDE);
     }
 
@@ -51,7 +51,7 @@ public class CoordinateHelper {
      * @return true if, and only if, the longitude is between the MIN and MAX
      *         longitude
      */
-    public static boolean isValidLongitude(double longitude) {
+    public static boolean isValidLongitude(final double longitude) {
         return (longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE);
     }
 
@@ -64,11 +64,11 @@ public class CoordinateHelper {
      *            coordinate 2
      * @return the distance in KM
      */
-    public static double calculateDistance(Coordinate coord1, Coordinate coord2) {
+    public static double calculateDistance(final Coordinate coord1, final Coordinate coord2) {
         double deltaLat = Math.toRadians(coord2.getLatitude() - coord1.getLatitude());
         double deltaLon = Math.toRadians(coord2.getLongitude() - coord1.getLongitude());
-        double a = Math.pow(Math.sin(deltaLat / 2), 2)
-                + Math.pow(Math.sin(deltaLon / 2), 2) * Math.cos(coord1.getLatitude()) * Math.cos(coord2.getLatitude());
+        double a = Math.pow(Math.sin(deltaLat / 2), 2) + Math.pow(Math.sin(deltaLon / 2), 2) * Math.cos(coord1.getLatitude()) * Math.cos(coord2
+                .getLatitude());
         double c = 2 * Math.asin(Math.sqrt(a));
         return EARTH_RADIUS_KM * c;
     }

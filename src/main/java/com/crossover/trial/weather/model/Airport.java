@@ -14,9 +14,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class Airport implements Serializable {
 
-	private static final long serialVersionUID = 2134416010544747160L;
+    private static final long serialVersionUID = 2134416010544747160L;
 
-	/** Main city served by airport. May be spelled differently from name */
+    /** Main city served by airport. May be spelled differently from name */
     private String city;
 
     /** Country or territory where airport is located */
@@ -46,7 +46,7 @@ public class Airport implements Serializable {
         this.country = builder.country;
         this.iata = builder.iata;
         this.icao = builder.icao;
-		this.coordinate = new Coordinate(builder.latitude, builder.longitude);
+        this.coordinate = new Coordinate(builder.latitude, builder.longitude);
         this.altitude = builder.altitude;
         this.timezone = builder.timezone;
         this.dst = builder.dst;
