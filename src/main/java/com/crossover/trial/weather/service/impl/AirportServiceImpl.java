@@ -104,7 +104,9 @@ public class AirportServiceImpl implements AirportService {
         AtmosphericInformation oldValue = getAtmosphericInformationByIataCode(iataCode);
         dataRepository.getAtmosphericInformation().putIfAbsent(iataCode, oldValue);
 
-        AtmosphericInformation newValue = new AtmosphericInformation.Builder().build();
+        AtmosphericInformation newValue = new AtmosphericInformation.Builder().withTemperature(oldValue.getTemperature()).withHumidity(oldValue
+                .getHumidity()).withWind(oldValue.getWind()).withPrecipitation(oldValue.getPrecipitation()).withPressure(oldValue.getPressure())
+                .withCloudCover(oldValue.getCloudCover()).build();
         updateAtmosphericInformation(newValue, pointType, dp);
         dataRepository.getAtmosphericInformation().replace(iataCode, oldValue, newValue);
     }

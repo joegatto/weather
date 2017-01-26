@@ -126,32 +126,44 @@ public class AtmosphericInformation implements Serializable {
         private Optional<DataPoint> cloudCover = Optional.empty();
 
         public Builder withTemperature(final DataPoint temperature) {
-            this.temperature = Optional.of(temperature);
+            if (temperature != null) {
+                this.temperature = Optional.of(temperature);
+            }
             return this;
         }
 
         public Builder withWind(final DataPoint wind) {
-            this.wind = Optional.of(wind);
+            if (wind != null) {
+                this.wind = Optional.of(wind);
+            }
             return this;
         }
 
         public Builder withHumidity(final DataPoint humidity) {
-            this.humidity = Optional.of(humidity);
+            if (humidity != null) {
+                this.humidity = Optional.of(humidity);
+            }
             return this;
         }
 
         public Builder withPrecipitation(final DataPoint precipitation) {
-            this.precipitation = Optional.of(precipitation);
+            if (precipitation != null) {
+                this.precipitation = Optional.of(precipitation);
+            }
             return this;
         }
 
         public Builder withPressure(final DataPoint pressure) {
-            this.pressure = Optional.of(pressure);
+            if (pressure != null) {
+                this.pressure = Optional.of(pressure);
+            }
             return this;
         }
 
         public Builder withCloudCover(final DataPoint cloudCover) {
-            this.cloudCover = Optional.of(cloudCover);
+            if (cloudCover != null) {
+                this.cloudCover = Optional.of(cloudCover);
+            }
             return this;
         }
 
