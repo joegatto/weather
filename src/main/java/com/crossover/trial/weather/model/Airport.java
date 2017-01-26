@@ -1,5 +1,7 @@
 package com.crossover.trial.weather.model;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -10,9 +12,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author Joao Gatto
  */
-public class Airport {
+public class Airport implements Serializable {
 
-    /** Main city served by airport. May be spelled differently from name */
+	private static final long serialVersionUID = 2134416010544747160L;
+
+	/** Main city served by airport. May be spelled differently from name */
     private String city;
 
     /** Country or territory where airport is located */
@@ -42,7 +46,7 @@ public class Airport {
         this.country = builder.country;
         this.iata = builder.iata;
         this.icao = builder.icao;
-        this.coordinate = new Coordinate(builder.latitude, builder.longitude);
+		this.coordinate = new Coordinate(builder.latitude, builder.longitude);
         this.altitude = builder.altitude;
         this.timezone = builder.timezone;
         this.dst = builder.dst;

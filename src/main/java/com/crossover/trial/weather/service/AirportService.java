@@ -2,10 +2,13 @@ package com.crossover.trial.weather.service;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.crossover.trial.weather.exception.WeatherException;
 import com.crossover.trial.weather.model.Airport;
 import com.crossover.trial.weather.model.AtmosphericInformation;
+import com.crossover.trial.weather.model.DataPoint;
 
 public interface AirportService {
 
@@ -13,26 +16,24 @@ public interface AirportService {
 
 	Airport getAirport(String iataCode);
 
-	boolean airportExists(String iataCode);
-
 	void deleteAirport(String iata);
 
 	Collection<Airport> getAllAirports();
 
+	Set<String> getAllAirportCodes();
+
 	Collection<AtmosphericInformation> getAllAtmosphericInformation();
 
-	Map<String, AtomicInteger> getRequestCounts();
+	void updateAtmosphericInformation(String iataCode, String pointType, DataPoint dp) throws WeatherException;
+
+	Map<Airport, AtomicInteger> getRequestCounts();
 
 	Map<Double, AtomicInteger> getRadiusCounts();
 
 	AtmosphericInformation getAtmosphericInformationByIataCode(String iataCode);
 
-	void updateRequestCount(String iataCode, int count);
-
 	AtomicInteger getRequestCount(String iataCode);
 
-	void updateRadiusCount(Double radius, int count);
-
-	AtomicInteger getRadiusCount(Double radius);
+	void updateRequestFrequency(String iata, Double radius);
 
 }

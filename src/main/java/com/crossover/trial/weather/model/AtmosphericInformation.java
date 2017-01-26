@@ -1,5 +1,6 @@
 package com.crossover.trial.weather.model;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -10,9 +11,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Encapsulates sensor information for a particular location
  */
-public class AtmosphericInformation {
+public class AtmosphericInformation implements Serializable {
 
-    /** temperature in degrees celsius */
+	private static final long serialVersionUID = 4884101137188765237L;
+
+	/** temperature in degrees celsius */
     private DataPoint temperature;
 
     /** wind speed in km/h */
@@ -136,7 +139,7 @@ public class AtmosphericInformation {
         return EqualsBuilder.reflectionEquals(this, that, false);
     }
 
-    public static class Builder {
+	public static class Builder {
 
         private Optional<DataPoint> temperature = Optional.empty();
         private Optional<DataPoint> wind = Optional.empty();

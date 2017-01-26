@@ -2,6 +2,7 @@ package com.crossover.trial.weather.endpoint.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Path;
@@ -11,12 +12,11 @@ import javax.ws.rs.core.Response;
 import com.crossover.trial.weather.endpoint.WeatherCollectorEndpoint;
 import com.crossover.trial.weather.exception.WeatherException;
 import com.crossover.trial.weather.model.Airport;
-import com.crossover.trial.weather.model.AtmosphericInformation;
 import com.crossover.trial.weather.model.DataPoint;
-import com.crossover.trial.weather.model.DataPointType;
 import com.crossover.trial.weather.service.AirportService;
 import com.crossover.trial.weather.service.impl.AirportServiceImpl;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * A REST implementation of the WeatherCollector API. Accessible only to airport
@@ -28,136 +28,85 @@ import com.google.gson.Gson;
 @Path("/collect")
 public class WeatherCollectorEndpointImpl implements WeatherCollectorEndpoint {
 
-    public static final Logger LOGGER = Logger.getLogger(WeatherCollectorEndpointImpl.class.getName());
+	public static final Logger LOGGER = Logger.getLogger(WeatherCollectorEndpointImpl.class.getName());
 
-    /** shared gson json to object factory */
-    public static final Gson gson = new Gson();
+	/** shared gson json to object factory */
+	public static final Gson gson = new Gson();
 
-    private AirportService airportService = new AirportServiceImpl();
+	private AirportService airportService = new AirportServiceImpl();
 
-    @Override
-    public Response ping() {
-        return Response.status(Response.Status.OK).entity("ready").build();
-    }
+	@Override
+	public Response ping() {
+		return Response.status(Response.Status.OK).entity("ready").build();
+	}
 
-    @Override
-    public Response updateWeather(@PathParam("iata") final String iataCode,
-            @PathParam("pointType") final String pointType, final String datapointJson) {
-        try {
-            addDataPoint(iataCode, pointType, gson.fromJson(datapointJson, DataPoint.class));
-        } catch (WeatherException e) {
-            e.printStackTrace();
-        }
-        return Response.status(Response.Status.OK).build();
-    }
+	@Override
+	public Response updateWeather(@PathParam("iata") final String iataCode,
+			@PathParam("pointType") final String pointType, final String datapointJson) {
+		DataPoint dp;
+		try {
+			dp = gson.fromJson(datapointJson, DataPoint.class);
+		} catch (JsonSyntaxException e) {
+			LOGGER.log(Level.SEVERE, "Cannot read datapoint", e);
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		if (iataCode == null || pointType == null || dp == null || airportService.getAirport(iataCode) == null) {
+			LOGGER.log(Level.SEVERE,
+					"Bad parameters: iataCode = " + iataCode + ", pointType = " + pointType + ", dp = " + dp);
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		try {
+			airportService.updateAtmosphericInformation(iataCode, pointType, dp);
+		} catch (WeatherException e) {
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+		return Response.status(Response.Status.OK).build();
+	}
 
-    @Override
-    public Response getAirports() {
-        Set<String> retval = new HashSet<>();
-        for (Airport ad : airportService.getAllAirports()) {
-            retval.add(ad.getIata());
-        }
-        return Response.status(Response.Status.OK).entity(retval).build();
-    }
+	@Override
+	public Response getAirports() {
+		Set<String> result = new HashSet<>();
+		result.addAll(airportService.getAllAirportCodes());
+		return Response.status(Response.Status.OK).entity(result).build();
+	}
 
-    @Override
-    public Response getAirport(@PathParam("iata") final String iata) {
-        Airport ad = airportService.getAirport(iata);
-        return Response.status(Response.Status.OK).entity(ad).build();
-    }
+	@Override
+	public Response getAirport(@PathParam("iata") final String iata) {
+		Airport ad = airportService.getAirport(iata);
+		return Response.status(Response.Status.OK).entity(ad).build();
+	}
 
-    @Override
-    public Response addAirport(@PathParam("iata") final String iata, @PathParam("lat") final String latString,
-            @PathParam("long") final String longString) {
-        Airport airport = new Airport.Builder().withIata(iata).withLatitude(Double.valueOf(latString))
-                .withLongitude(Double.valueOf(longString)).build();
-        airportService.addAirport(airport);
-        return Response.status(Response.Status.OK).build();
-    }
+	@Override
+	public Response addAirport(@PathParam("iata") final String iata, @PathParam("lat") final String latString,
+			@PathParam("long") final String longString) {
+		if (iata == null || iata.length() != 3 || latString == null || longString == null) {
+			LOGGER.log(Level.SEVERE,
+					"Bad parameters: iata = " + iata + ", latString = " + latString + ", longString = " + longString);
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		Airport airport = null;
+		try {
+			airport = new Airport.Builder().withIata(iata).withLatitude(Double.valueOf(latString))
+					.withLongitude(Double.valueOf(longString)).build();
+		} catch (IllegalArgumentException e) {
+			LOGGER.log(Level.SEVERE,
+					"Wrong airport coordinates latString = " + latString + ", longString = " + longString);
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		airportService.addAirport(airport);
+		return Response.status(Response.Status.OK).build();
+	}
 
-    @Override
-    public Response deleteAirport(@PathParam("iata") final String iata) {
-        airportService.deleteAirport(iata);
-        return Response.status(Response.Status.OK).build();
-    }
+	@Override
+	public Response deleteAirport(@PathParam("iata") final String iata) {
+		airportService.deleteAirport(iata);
+		return Response.status(Response.Status.OK).build();
+	}
 
-    @Override
-    public Response exit() {
-        System.exit(0);
-        return Response.noContent().build();
-    }
-
-    /**
-     * Update the airports weather data with the collected data.
-     *
-     * @param iataCode
-     *            the 3 letter IATA code
-     * @param pointType
-     *            the point type {@link DataPointType}
-     * @param dp
-     *            a datapoint object holding pointType data
-     *
-     * @throws WeatherException
-     *             if the update can not be completed
-     */
-    private void addDataPoint(final String iataCode, final String pointType, final DataPoint dp)
-            throws WeatherException {
-        AtmosphericInformation ai = airportService.getAtmosphericInformationByIataCode(iataCode);
-        updateAtmosphericInformation(ai, pointType, dp);
-    }
-
-    /**
-     * update atmospheric information with the given data point for the given
-     * point type
-     *
-     * @param ai
-     *            the atmospheric information object to update
-     * @param pointType
-     *            the data point type as a string
-     * @param dp
-     *            the actual data point
-     */
-    private void updateAtmosphericInformation(final AtmosphericInformation ai, final String pointType,
-            final DataPoint dp) throws WeatherException {
-
-        if (pointType.equalsIgnoreCase(DataPointType.WIND.name()) && DataPointType.WIND.validate(dp)) {
-            ai.setWind(dp);
-            ai.setLastUpdateTime(System.currentTimeMillis());
-            return;
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.TEMPERATURE.name()) && DataPointType.TEMPERATURE.validate(dp)) {
-            ai.setTemperature(dp);
-            ai.setLastUpdateTime(System.currentTimeMillis());
-            return;
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.HUMIDITY.name()) && DataPointType.HUMIDITY.validate(dp)) {
-            ai.setHumidity(dp);
-            ai.setLastUpdateTime(System.currentTimeMillis());
-            return;
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.PRESSURE.name()) && DataPointType.PRESSURE.validate(dp)) {
-            ai.setPressure(dp);
-            ai.setLastUpdateTime(System.currentTimeMillis());
-            return;
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.CLOUDCOVER.name()) && DataPointType.CLOUDCOVER.validate(dp)) {
-            ai.setCloudCover(dp);
-            ai.setLastUpdateTime(System.currentTimeMillis());
-            return;
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.PRECIPITATION.name())
-                && DataPointType.PRECIPITATION.validate(dp)) {
-            ai.setPrecipitation(dp);
-            ai.setLastUpdateTime(System.currentTimeMillis());
-            return;
-        }
-
-        throw new IllegalStateException("couldn't update atmospheric data");
-    }
+	@Override
+	public Response exit() {
+		return Response.status(Response.Status.FORBIDDEN).build();
+	}
 
 }

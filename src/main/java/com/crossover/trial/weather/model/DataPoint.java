@@ -1,5 +1,7 @@
 package com.crossover.trial.weather.model;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -11,118 +13,120 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @author Joao Gatto
  */
-public class DataPoint {
+public class DataPoint implements Serializable {
 
-    private double mean = 0.0;
-    private double first = 0;
-    private double median = 0;
-    private double last = 0;
-    private int count = 0;
+	private static final long serialVersionUID = -1834210238243370229L;
 
-    private DataPoint(final Builder builder) {
-        this.first = builder.first;
-        this.mean = builder.mean;
-        this.median = builder.median;
-        this.last = builder.last;
-        this.count = builder.count;
-    }
+	private double mean = 0.0;
+	private double first = 0;
+	private double median = 0;
+	private double last = 0;
+	private int count = 0;
 
-    /** the mean of the observations */
-    public double getMean() {
-        return mean;
-    }
+	private DataPoint(final Builder builder) {
+		this.first = builder.first;
+		this.mean = builder.mean;
+		this.median = builder.median;
+		this.last = builder.last;
+		this.count = builder.count;
+	}
 
-    public void setMean(final double mean) {
-        this.mean = mean;
-    }
+	/** the mean of the observations */
+	public double getMean() {
+		return mean;
+	}
 
-    /** 1st quartile -- useful as a lower bound */
-    public double getFirst() {
-        return first;
-    }
+	public void setMean(final double mean) {
+		this.mean = mean;
+	}
 
-    public void setFirst(final double first) {
-        this.first = first;
-    }
+	/** 1st quartile -- useful as a lower bound */
+	public double getFirst() {
+		return first;
+	}
 
-    /** 2nd quartile -- median value */
-    public double getMedian() {
-        return median;
-    }
+	public void setFirst(final double first) {
+		this.first = first;
+	}
 
-    public void setMedian(final double median) {
-        this.median = median;
-    }
+	/** 2nd quartile -- median value */
+	public double getMedian() {
+		return median;
+	}
 
-    /** 3rd quartile value -- less noisy upper value */
-    public double getLast() {
-        return last;
-    }
+	public void setMedian(final double median) {
+		this.median = median;
+	}
 
-    public void setLast(final double last) {
-        this.last = last;
-    }
+	/** 3rd quartile value -- less noisy upper value */
+	public double getLast() {
+		return last;
+	}
 
-    /** the total number of measurements */
-    public int getCount() {
-        return count;
-    }
+	public void setLast(final double last) {
+		this.last = last;
+	}
 
-    public void setCount(final int count) {
-        this.count = count;
-    }
+	/** the total number of measurements */
+	public int getCount() {
+		return count;
+	}
 
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
-    }
+	public void setCount(final int count) {
+		this.count = count;
+	}
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, false);
-    }
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.NO_CLASS_NAME_STYLE);
+	}
 
-    @Override
-    public boolean equals(final Object that) {
-        return EqualsBuilder.reflectionEquals(this, that, false);
-    }
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this, false);
+	}
 
-    public static class Builder {
-        private double mean = 0.0;
-        private double first = 0;
-        private double median = 0;
-        private double last = 0;
-        private int count = 0;
+	@Override
+	public boolean equals(final Object that) {
+		return EqualsBuilder.reflectionEquals(this, that, false);
+	}
 
-        public Builder() {
-        }
+	public static class Builder {
+		private double mean = 0.0;
+		private double first = 0;
+		private double median = 0;
+		private double last = 0;
+		private int count = 0;
 
-        public Builder withMean(final double mean) {
-            this.mean = mean;
-            return this;
-        }
+		public Builder() {
+		}
 
-        public Builder withFirst(final double first) {
-            this.first = first;
-            return this;
-        }
+		public Builder withMean(final double mean) {
+			this.mean = mean;
+			return this;
+		}
 
-        public Builder withMedian(final double median) {
-            this.median = median;
-            return this;
-        }
+		public Builder withFirst(final double first) {
+			this.first = first;
+			return this;
+		}
 
-        public Builder withLast(final double last) {
-            this.last = last;
-            return this;
-        }
+		public Builder withMedian(final double median) {
+			this.median = median;
+			return this;
+		}
 
-        public Builder withCount(final int count) {
-            this.count = count;
-            return this;
-        }
+		public Builder withLast(final double last) {
+			this.last = last;
+			return this;
+		}
 
-        public DataPoint build() {
-            return new DataPoint(this);
-        }
-    }
+		public Builder withCount(final int count) {
+			this.count = count;
+			return this;
+		}
+
+		public DataPoint build() {
+			return new DataPoint(this);
+		}
+	}
 }

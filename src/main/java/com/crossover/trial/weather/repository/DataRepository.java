@@ -8,12 +8,12 @@ import com.crossover.trial.weather.model.AtmosphericInformation;
 
 public interface DataRepository {
 
-    Map<String, AtomicInteger> getRequestFrequency();
+	Map<Airport, AtomicInteger> getRequestFrequency();
 
-    Map<Double, AtomicInteger> getRadiusFrequency();
+	Map<Double, AtomicInteger> getRadiusFrequency();
 
-    Map<String, AtmosphericInformation> getAtmosphericInformation();
+	Map<String, AtmosphericInformation> getAtmosphericInformation();
 
-    Map<String, Airport> getAirportData();
+	Map<String, Airport> getAirportData();
 
 }
