@@ -59,6 +59,7 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
             }
         }
         retval.put("datasize", datasize);
+
         Map<String, Double> freq = new HashMap<>();
         // fraction of queries
         for (Airport data : airportService.getAllAirports()) {
@@ -66,6 +67,7 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
             freq.put(data.getIata(), frac);
         }
         retval.put("iata_freq", freq);
+
         int m = airportService.getRadiusCounts().keySet().stream().max(Double::compare).orElse(1000.0).intValue() + 1;
         int[] hist = new int[m];
         for (Map.Entry<Double, AtomicInteger> e : airportService.getRadiusCounts().entrySet()) {

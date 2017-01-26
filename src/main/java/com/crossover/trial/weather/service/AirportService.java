@@ -12,7 +12,7 @@ import com.crossover.trial.weather.model.DataPoint;
 
 public interface AirportService {
 
-    Airport addAirport(Airport airport);
+    void addAirport(Airport airport);
 
     Airport getAirport(String iataCode);
 

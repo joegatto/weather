@@ -23,8 +23,12 @@ public class AirportServiceImpl implements AirportService {
     private DataRepository dataRepository = DataRepositoryImpl.getInstance();
 
     @Override
-    public Airport addAirport(final Airport airport) {
-        return dataRepository.getAirportData().put(airport.getIata(), airport);
+    public void addAirport(final Airport airport) {
+        if (airport == null || airport.getIata() == null) {
+            LOGGER.severe("Cannot save airport");
+            return;
+        }
+        dataRepository.getAirportData().put(airport.getIata(), airport);
     }
 
     @Override
@@ -96,12 +100,11 @@ public class AirportServiceImpl implements AirportService {
         if (dp == null) {
             throw new IllegalArgumentException("DataPoint is null");
         }
+
         AtmosphericInformation oldValue = getAtmosphericInformationByIataCode(iataCode);
         dataRepository.getAtmosphericInformation().putIfAbsent(iataCode, oldValue);
 
-        AtmosphericInformation newValue = new AtmosphericInformation.Builder().withTemperature(oldValue.getTemperature()).withHumidity(oldValue
-                .getHumidity()).withWind(oldValue.getWind()).withPrecipitation(oldValue.getPrecipitation()).withPressure(oldValue.getPressure())
-                .withCloudCover(oldValue.getCloudCover()).build();
+        AtmosphericInformation newValue = new AtmosphericInformation.Builder().build();
         updateAtmosphericInformation(newValue, pointType, dp);
         dataRepository.getAtmosphericInformation().replace(iataCode, oldValue, newValue);
     }
