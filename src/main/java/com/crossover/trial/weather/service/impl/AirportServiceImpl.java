@@ -66,7 +66,12 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public AtmosphericInformation getAtmosphericInformationByIataCode(final String iataCode) {
-        return dataRepository.getAtmosphericInformation().getOrDefault(iataCode, new AtmosphericInformation.Builder().build());
+        if (iataCode == null) {
+            LOGGER.severe("iataCode is null");
+            return null;
+        }
+        return dataRepository.getAtmosphericInformation().getOrDefault(iataCode,
+                new AtmosphericInformation.Builder().build());
     }
 
     @Override
@@ -87,7 +92,8 @@ public class AirportServiceImpl implements AirportService {
         dataRepository.getAirportData().remove(iata);
     }
 
-    public void updateAtmosphericInformation(final String iataCode, final String pointType, final DataPoint dp) throws WeatherException {
+    public void updateAtmosphericInformation(final String iataCode, final String pointType, final DataPoint dp)
+            throws WeatherException {
         if (iataCode == null) {
             throw new IllegalArgumentException("IATA code is null");
         }
@@ -104,9 +110,10 @@ public class AirportServiceImpl implements AirportService {
         AtmosphericInformation oldValue = getAtmosphericInformationByIataCode(iataCode);
         dataRepository.getAtmosphericInformation().putIfAbsent(iataCode, oldValue);
 
-        AtmosphericInformation newValue = new AtmosphericInformation.Builder().withTemperature(oldValue.getTemperature()).withHumidity(oldValue
-                .getHumidity()).withWind(oldValue.getWind()).withPrecipitation(oldValue.getPrecipitation()).withPressure(oldValue.getPressure())
-                .withCloudCover(oldValue.getCloudCover()).build();
+        AtmosphericInformation newValue = new AtmosphericInformation.Builder()
+                .withTemperature(oldValue.getTemperature()).withHumidity(oldValue.getHumidity())
+                .withWind(oldValue.getWind()).withPrecipitation(oldValue.getPrecipitation())
+                .withPressure(oldValue.getPressure()).withCloudCover(oldValue.getCloudCover()).build();
         updateAtmosphericInformation(newValue, pointType, dp);
         dataRepository.getAtmosphericInformation().replace(iataCode, oldValue, newValue);
     }
@@ -122,7 +129,8 @@ public class AirportServiceImpl implements AirportService {
      * @param dp
      *            the actual data point
      */
-    private void updateAtmosphericInformation(final AtmosphericInformation ai, final String pointType, final DataPoint dp) throws WeatherException {
+    private void updateAtmosphericInformation(final AtmosphericInformation ai, final String pointType,
+            final DataPoint dp) throws WeatherException {
         if (pointType.equalsIgnoreCase(DataPointType.WIND.name())) {
             if (DataPointType.WIND.validate(dp)) {
                 ai.setWind(dp);
