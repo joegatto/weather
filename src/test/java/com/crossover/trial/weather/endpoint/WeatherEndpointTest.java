@@ -1,4 +1,4 @@
-package com.crossover.trial.weather;
+package com.crossover.trial.weather.endpoint;
 
 import com.crossover.trial.weather.endpoint.WeatherCollectorEndpoint;
 import com.crossover.trial.weather.endpoint.WeatherQueryEndpoint;

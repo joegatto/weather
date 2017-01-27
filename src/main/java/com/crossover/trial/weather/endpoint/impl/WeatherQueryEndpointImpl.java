@@ -97,22 +97,21 @@ public class WeatherQueryEndpointImpl implements WeatherQueryEndpoint {
             radius = 0;
         }
         airportService.updateRequestFrequency(iata, radius);
-        List<AtmosphericInformation> retval = new ArrayList<>();
+        List<AtmosphericInformation> result = new ArrayList<>();
         if (radius == 0) {
-            retval.add(airportService.getAtmosphericInformationByIataCode(iata));
+            result.add(airportService.getAtmosphericInformationByIataCode(iata));
         } else {
             Airport airport = airportService.getAirport(iata);
             for (Airport airport2 : airportService.getAllAirports()) {
                 if (CoordinateHelper.calculateDistance(airport.getCoordinate(), airport2.getCoordinate()) <= radius) {
                     AtmosphericInformation ai = airportService.getAtmosphericInformationByIataCode(airport2.getIata());
-                    if (ai.getCloudCover() != null || ai.getHumidity() != null || ai.getPrecipitation() != null || ai.getPressure() != null || ai
-                            .getTemperature() != null || ai.getWind() != null) {
-                        retval.add(ai);
+                    if (ai != null) {
+                        result.add(ai);
                     }
                 }
             }
         }
-        return Response.status(Response.Status.OK).entity(retval).build();
+        return Response.status(Response.Status.OK).entity(result).build();
     }
 
 }
