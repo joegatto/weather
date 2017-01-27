@@ -1,7 +1,12 @@
 package com.crossover.trial.weather.endpoint;
 
-import com.crossover.trial.weather.endpoint.WeatherCollectorEndpoint;
-import com.crossover.trial.weather.endpoint.WeatherQueryEndpoint;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.crossover.trial.weather.endpoint.impl.WeatherCollectorEndpointImpl;
 import com.crossover.trial.weather.endpoint.impl.WeatherQueryEndpointImpl;
 import com.crossover.trial.weather.model.AtmosphericInformation;
@@ -11,12 +16,6 @@ import com.crossover.trial.weather.repository.impl.DataRepositoryImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 public class WeatherEndpointTest {
 
@@ -68,7 +67,7 @@ public class WeatherEndpointTest {
         dataPoint.setMean(30);
         update.updateWeather("LGA", "wind", gson.toJson(dataPoint));
         List<AtmosphericInformation> ais = (List<AtmosphericInformation>) query.weather("JFK", "200").getEntity();
-        assertEquals(3, ais.size());
+        assertEquals(4, ais.size());
     }
 
     @Test

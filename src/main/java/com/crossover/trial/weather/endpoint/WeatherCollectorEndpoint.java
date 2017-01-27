@@ -9,9 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.crossover.trial.weather.model.Airport;
-import com.crossover.trial.weather.model.DataPointType;
-
 /**
  * The interface shared to airport weather collection systems.
  *
@@ -44,7 +41,8 @@ public interface WeatherCollectorEndpoint {
      */
     @POST
     @Path("/weather/{iata}/{pointType}")
-    Response updateWeather(@PathParam("iata") String iataCode, @PathParam("pointType") String pointType, String datapointJson);
+    Response updateWeather(@PathParam("iata") String iataCode, @PathParam("pointType") String pointType,
+            String datapointJson);
 
     /**
      * Return a list of known airports as a json formatted list
@@ -82,7 +80,8 @@ public interface WeatherCollectorEndpoint {
      */
     @POST
     @Path("/airport/{iata}/{lat}/{long}")
-    Response addAirport(@PathParam("iata") String iata, @PathParam("lat") String latString, @PathParam("long") String longString);
+    Response addAirport(@PathParam("iata") String iata, @PathParam("lat") String latString,
+            @PathParam("long") String longString);
 
     /**
      * Remove an airport from the known airport list
